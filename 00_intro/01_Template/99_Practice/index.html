@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="./data.js"></script>
+    <title>Document</title>
+</head>
+
+
+<body>
+   
+<main id ="app">
+    <!-- Flexbox를 사용하여 내용을 가로로 배열할 컨테이너를 정의 -->
+    <div class ="container">
+        <!-- jsonData 배열을 반복하여 각 학자 정보를 표시할 박스를 생성 -->
+    <div v-for="scholar in jsonData" :key="scholar.id" class="scholar-box">
+ <!-- 각 학자의 이름을 표시하는 제목 -->
+        <h2>{{ scholar.name }}</h2>
+         <!-- 각 학자의 소개를 표시하는 단락 -->
+        <p>{{ scholar.introduction }}</p>
+        <!-- 각 학자의 이미지를 표시하는 이미지 태그 -->
+        <img :src="scholar.img" :alt="scholar.name">
+    
+
+    </div>
+    </div>
+  
+</main><!-- Vue 애플리케이션을 생성하고 마운트하는 JavaScript 코드 -->
+    <script>
+        const {createApp} = Vue; //Vue의 createApp 함수 가져오기
+        createApp({
+            setup(){
+                const jsonData = scholar;  // scholar 데이터를 jsonData 변수에 할당
+                return{
+                    jsonData  // jsonData를 반환하여 템플릿에서 사용가능
+                    
+                    
+                }
+            }
+        }).mount("#app");  //#app 요소에 Vue 애플리케이션을 마운트함
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style1.css">
+    <script src="./data1.js"></script>
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <!-- 버튼을 클릭하여 모드를 전환하는 토글 버튼 -->
+        <button @click="toggleMode">{{isCharacterMode ? 'skill mode' :'charater mode'}}</button>
+        <!-- 데이터를 표시할 로우 요소 -->
+        <div class="row">
+            <!-- 캐릭터 모드인 경우 -->
+            <template v-if="isCharacterMode">
+                <!-- jsonData 배열을 순회하며 캐릭터 정보를 표시 -->
+                <div v-for="item in jsonData" :key="item.id">
+                    <!-- 각 캐릭터 항목을 나타내는 요소 -->
+                    <div class="bordered">
+                        <p>이름 : {{ item.name }}</p>
+                        <p>소개 : {{ item.introduction }}</p>
+                        <img :src="item.img" :alt="item.name">
+                    </div>
+                </div>
+            </template>
+            <template v-else>
+                <!-- jsonSkill 배열을 순회하며 스킬 정보를 표시 -->
+                <div v-for="item in jsonSkill" :key="item.id">
+                    <!-- 각 스킬 항목을 나타내는 요소 -->
+                    <div class="bordered">
+                        <p>이름 : {{ item.skill }}</p>
+                        <p>소개 : {{ item.introduction }}</p>
+                        <div class="skill-image">
+                            <div v-for="img in item.imgs" :key="imgs">
+                                <img :src="img" :alt="item.skill">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const jsonData = ref(scholar);
+                const jsonSkill = ref(msaSkill);
+                const isCharacterMode = ref(true);
+
+                // 모드를 전환하는 함수
+                const toggleMode = () => {
+                    isCharacterMode.value = !isCharacterMode.value; // isCharacterMode 값을 반전
+                };
+                // Vue 컴포넌트에 반환할 데이터와 함수들을 반환
+                return {
+                    jsonData,
+                    jsonSkill,
+                    isCharacterMode,
+                    toggleMode
+                };
+            }
+        }).mount("#app");
+    </script>
+</body>
+
+</html>

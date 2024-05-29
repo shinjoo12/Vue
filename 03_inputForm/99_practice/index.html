@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./date.js"></script>
+    <link rel="stylesheet" href="style2.css">
+    <title>Document</title>
+</head>
+<body>
+    <body>
+        <div id="app1">
+
+        <h1>vue v-model 이해하기</h1>
+        <button @click="fetchData">조회하기</button>
+        <div id="app">
+          <select v-model="selectedOption">
+            <option value="register">인물등록</option>
+          </select>
+          <div v-if="selectedOption === 'register'" class="center-content">
+            <label>name :</label>
+            <input v-model="name" type="text" />
+            <br />
+            <label>introduction :</label>
+            <input v-model="introduction" type="text" />
+            <br />
+            <label>img :</label>
+            <input v-model="img" type="text" />
+          </div>
+          <button @click="register">등록하기</button>
+    
+        </div>
+    </div>
+
+        <div id="app">
+
+          
+            <!-- 버튼을 클릭하여 모드를 전환하는 토글 버튼 -->
+            <button @click="toggleMode">{{isCharacterMode ? 'skill mode' :'charater mode'}}</button>
+            <!-- 데이터를 표시할 로우 요소 -->
+            <div class="row">
+                <!-- 캐릭터 모드인 경우 -->
+                <template v-if="isCharacterMode">
+                    <!-- jsonData 배열을 순회하며 캐릭터 정보를 표시 -->
+                    <div v-for="item in jsonData" :key="item.id">
+                        <!-- 각 캐릭터 항목을 나타내는 요소 -->
+                        <div class="bordered">
+                            <p>이름 : {{ item.name }}</p>
+                            <p>소개 : {{ item.introduction }}</p>
+                            <img :src="item.img" :alt="item.name">
+                        </div>
+
+                   
+                    </div>
+                </template>
+                <template v-else>
+                    <!-- jsonSkill 배열을 순회하며 스킬 정보를 표시 -->
+                    <div v-for="item in jsonSkill" :key="item.id">
+                        <!-- 각 스킬 항목을 나타내는 요소 -->
+                        <div class="bordered">
+                            <p>이름 : {{ item.skill }}</p>
+                            <p>소개 : {{ item.introduction }}</p>
+                            <div class="skill-image">
+                                <div v-for="img in item.imgs" :key="imgs">
+                                    <img :src="img" :alt="item.skill">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                
+            </div>
+        </div>
+        <script>
+            const { createApp, ref } = Vue;
+    
+            createApp({
+                setup() {
+                    const jsonData = ref(scholar);
+                    const jsonSkill = ref(msaSkill);
+                    const isCharacterMode = ref(false); // Start with Skill Mode initially
+                   
+                    
+    
+                    // 모드를 전환하는 함수
+                    const toggleMode = () => {
+                        isCharacterMode.value = !isCharacterMode.value; // isCharacterMode 값을 반전
+                    };
+                    // Vue 컴포넌트에 반환할 데이터와 함수들을 반환
+                    return {
+                        jsonData,
+                        jsonSkill,
+                        isCharacterMode,
+                        toggleMode
+                    };
+                }
+            }).mount("#app");
+
+            createApp({
+        setup() {
+          const selectedOption = ref("register");
+          const name = ref("");
+          const introduction = ref("");
+          const img = ref("");
+
+          const fetchData = () => {
+            // 조회하기 버튼 클릭 시 실행할 함수
+            console.log("조회하기 클릭");
+          };
+
+          const register = () => {
+            // 등록하기 버튼 클릭 시 실행할 함수
+            console.log("등록하기 클릭");
+            console.log("Name:", name.value);
+            console.log("Introduction:", introduction.value);
+            console.log("Img:", img.value);
+          };
+
+          return {
+            selectedOption,
+            name,
+            introduction,
+            img,
+            fetchData,
+            register,
+          };
+        },
+      }).mount("app1");
+
+
+        </script>
+    </body>
+    
+    </html>

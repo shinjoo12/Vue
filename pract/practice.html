@@ -77,8 +77,10 @@
                 <button @click="handlerState">{{state?"등록하기":"조회하기" }}</button>
             </div>
             <div v-if="state">
+                <!-- 모드에 따라 버튼 텍스트 변경 (캐릭터 모드 또는 스킬 모드) -->
                 <button @click="handleMode">{{mode=="charater"? "skill-mode" : "charater-mode"}}</button>
                 <article v-if="mode == 'skill'">
+                     <!-- 스킬 데이터를 반복하여 표시 -->
                     <section v-for="data in skills" :key="data.id">
                         <label>기술 : {{data.skill}}</label>
                         <label v-for="(item, index) in data.list">
@@ -86,6 +88,7 @@
                         </label>
                         <p>소개 : {{data.introduction}}</p>
                         <figure class="image-container">
+                            <!-- 이미지가 있으면 반복하여 표시, 없으면 메시지 출력 -->
                             <img v-if="data.imgs" v-for="img in data.imgs" :src="img" :alt="data.name" />
                             <div v-else>
                                 <h3>No images</h3>
@@ -94,6 +97,7 @@
                     </section>
                 </article>
                 <article v-else>
+                     <!-- 캐릭터 데이터를 반복하여 표시 -->
                     <section v-for="data in character" :key="data.id">
                         <label>이름 : {{data.name}}</label>
                         <p>소개 : {{data.introduction}}</p>
@@ -105,21 +109,25 @@
             </div>
 
             <div v-else class="inputContainer">
+                <!-- 사용자가 선택하는 등록 타입 (캐릭터 또는 스킬) -->
                 <select v-model="type">
                     <option value="charater">인물등록</option>
                     <option value="skill">스킬등록</option>
                 </select>
                 <div v-if="type == 'charater'" class="inputBox">
+                    <!-- 캐릭터 정보 입력 폼 -->
                     <label>name : </label> <input v-model="characterInfo.name" /><br>
                     <label>introduction : </label> <input v-model="characterInfo.introduction" /><br>
                     <label>img : </label> <input v-model="characterInfo.img" />
                 </div>
                 <div v-else-if="type == 'skill'" class="inputBox">
+                    <!-- 스킬 정보 입력 폼 -->
                     <label>skill : </label> <input v-model="skillInfo.skill" /> <br>
                     <label>list : </label> <input v-model="skillInfo.list" placeholder="기술 list는 ','로 구분해주세요" /> <br>
                     <label>introduction : </label> <input v-model="skillInfo.introduction" /><br>
                     <label>img:</label>
                     <div v-for="index in imgCnt" :key="index">
+                        <!-- 다중 이미지 입력을 위한 입력 필드 -->
                         <input v-model="skillInfo.imgs[index-1]" placeholder="이미지 URL 입력" />
                     </div>
                     <button @click="imgCnt++">이미지 추가</button>
@@ -135,6 +143,7 @@
         createApp({
             setup() {
                 {
+                    // Vue 애플리케이션의 상태 및 함수 정의
                     const character = reactive(scholar);
                     const skills = reactive(msaSkill);
                     const mode = ref("charater", "skill");
@@ -146,15 +155,16 @@
                         list: "",
                         introduction: "",
                         imgs: []
-                    });
+                    }); // 반응적인 스킬 정보 객체 초기값
                     const characterInfo = reactive({
                         id: 0,
                         name: "",
                         introduction: "",
                         img: ""
-                    });
+                    }); // 반응적인 캐릭터 정보 객체 초기값
                     const imgCnt = ref(1);
 
+                        // 모드 변경 함수
                     function handleMode() {
                         if (mode.value == "charater") {
                             mode.value = "skill"
@@ -172,6 +182,7 @@
                             characterInfo.id = character.length + 1;
                             character.push({...characterInfo});
 
+                             // 스킬 정보 초기화
                             Object.assign(characterInfo,{
                                 id: 0,
                                 name: "",
@@ -193,7 +204,7 @@
                             console.log(skills);
                         }
                     }
-
+                    // Vue 앱에 반환할 상태 및 함수
                     return {
                         character,
                         skills,

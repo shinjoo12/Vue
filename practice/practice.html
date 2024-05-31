@@ -67,10 +67,13 @@
         const emojis = reactive({});
 
         // 초기 데이터 목록을 받아오기 위함
-        // 이렇게 안해도 상관없으나 오늘 복습을 위함
+        // 이모지를 가져오는 비동기 함수
         watchEffect(async () => {
+            // GitHub API에서 이모지를 가져옴
             emojis = await fetch("https://api.github.com/emojis")
                 .then(response => response.json())
+
+                 // 가져온 데이터를 emojis 객체에 할당
                 .then(data => Object.assign(emojis,data));
                 console.log(emojis["100"])
         });
